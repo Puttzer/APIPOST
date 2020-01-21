@@ -6,8 +6,6 @@ const Datastore = require('nedb-promise');
 app.use(express.urlencoded());
 app.use(express.json());
 
-PORT
-
 db = new Datastore({ filename: "./posts.db", autoload: true });
 
 app.get("/posts", async (req, res) => {
@@ -27,10 +25,9 @@ app.delete("/post/:id", async (req, res) => {
 
 app.patch("/post/:id", async (req, res) => {
     let posts = await db.findOne({ _id: req.params.id });
-    console.log(posts);
+    // console.log(req)
     posts = await db.update(posts, {
-        "title": "Patrick", "hej": "hejdå",
-        _id: req.params.id
+        $set: { "title": req.body.title, "hej": req.body.hej }
     });
     res.json(posts);
 });
